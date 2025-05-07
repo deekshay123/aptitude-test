@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="/" type="image/x-icon" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptitude Test Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4cc9f0;
+      --dark-color: #1a1a2e;
+      --light-color: #f8f9fa;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-color);
+      margin: 0;
+      padding: 0;
+  padding: 0;
+  font-weight: 300; /* Light bold */
+}
+
+.navbar {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  color: #ffffff;
+  padding: 1.35rem;
+  text-align: center;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-size: 36px;
+  -webkit-text-fill-color: rgb(255, 255, 255);
+  font-weight: bold;
+  margin: 0 auto;
+  display: block;
+}
+
+.sidebar {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    padding: 1.5rem 0;
+    position: fixed;
+    top: 107px;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s ease;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    padding: 0.8rem 1.5rem;
+    margin: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.sidebar li:not(:last-child) {
+    margin-bottom: 0.5rem;
+}
+
+.sidebar li:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateX(5px);
+}
+
+.sidebar li.active {
+    background: rgba(67, 97, 238, 0.2);
+    border-left: 4px solid var(--primary-color);
+}
+
+.sidebar li a {
+    text-decoration: none;
+    color: rgba(255,255,255,0.9);
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.sidebar li a:hover {
+    color: #fff;
+}
+
+.sidebar li i {
+    font-size: 1.1rem;
+    margin-right: 15px;
+    width: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.sidebar li:hover i {
+    transform: scale(1.1);
+}
+
+.sidebar li.active i {
+    color: var(--accent-color);
+}
+
+.sidebar li .badge {
+    position: absolute;
+    right: 1.5rem;
+    background: var(--accent-color);
+    color: white;
+    border-radius: 10px;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+}
+
+.dropdown-menu {
+    background: rgba(0,0,0,0.2);
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.dropdown-menu li {
+    padding: 0.6rem 1rem;
+    margin: 0;
+}
+
+.dropdown-menu li a {
+    font-size: 0.9rem;
+}
+
+.dropdown-menu li:hover {
+    background: rgba(255,255,255,0.1);
+}
+.sidebar-before {
+  /* background-image: linear-gradient(to right, #ff9900, #ff6600); */
+  height: 107px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  z-index: 1000;
+  /* border-bottom: 1px solid #455a64; Added border */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Added shadow */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.toggle-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .toggle-btn:hover {
+        transform: rotate(90deg);
+    }
+
+.sidebar-before {
+  /* background-image: linear-gradient(to right, #ff9900, #ff6600); */
+  background-size: cover;
+  background-position: center;
+  height: 107px;
+  width: 250px;
+  border: 1px solid #455a64;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar-before img {
+  height: 90px;
+  width: 90px;
+  object-fit: cover;
+  border: 5px solid #ffff00;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.sidebar.active {
+  left: -250px;
+}
+
+.navbar-nav li {
+  margin-right: 20px;
+}
+
+.navbar-nav a {
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.navbar-nav a:hover {
+  color: #FFC107;
+}
+
+.navbar-nav a.active {
+  color: #4CAF50;
+}
+
+.card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+
+
+}
+
+
+.card-header h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.card-body {
+    background-color: #f2f2f2;
+    padding: 1.5rem;
+}
+
+.card-body img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: animate 5s infinite;
+}
+
+@keyframes animate {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.card-body p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.card-body button {
+    background-color: #fafcfa;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.card-body button:hover {
+    background-color: #e5ede5;
+}
+
+.card-footer {
+    background-color: #f7f7f7;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    text-align: right;
+}
+
+.card-footer small {
+    font-size: 14px;
+    color: #666;
+}
+.logo {
+  width: 100px;
+  height: 100px;
+  border: 5px solid #d8d800;
+  border-radius: 0;
+  
+}
+
+.logo img {
+  height: 100px;
+  object-fit: cover;
+  border-radius: 0;
+  align-items: left;
+}
+
+.user-profile {
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 70px;
+  text-align: center;
+}
+
+.user-name {
+  text-align: center;
+  color: #009e91;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 5px;
+  display: block;
+  margin-bottom: 70px;
+  background-color: #ffdede;
+  padding: 7px;
+  border-radius: 10px;
+  width: fit-content;
+  margin: 0 auto;
+  position: relative;
+  top: -20px;
+}
+
+.toggle-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-right: 2px solid #838383;
+  color: #ffffff;
+  border: none;
+  padding: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: #2980b9;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.toggle-button:hover {
+  background-color: #3498db;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+    .main-content {
+      margin-left: 250px;
+      padding: 2rem;
+      transition: all 0.5s ease;
+      flex: 1;
+    }
+
+
+.main-content.active {
+  margin-left: 0;
+}
+
+.footer {
+  background-color: #212121;
+  color: #ffffff;
+  text-align: center;
+  padding: 1rem;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer a {
+  color: #FFC107;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #45a049;
+}
+
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.alert.success {
+  background-color: #4CAF50;
+}
+
+.alert.info {
+  background-color: #2196F3;
+}
+
+.alert.warning {
+  background-color: #ff9800;
+}
+
+.alert.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.navbar {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+
+}
+
+.sidebar {
+    background: linear-gradient(to bottom, var(--dark-color), #16213e);
+
+}
+
+.card {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+/* CSS */
+#test-management-btn {
+  margin: 5px 5px;
+  display: inline-block;
+  color: white;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  padding: 3rem 5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+  transition: all 0.3s ease;
+}
+#add-question-btn {
+  background-color:#3e8e41;
+  color: #fff;
+  padding: 7px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#result-btn {
+  /* background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); */
+  background: linear-gradient(135deg, #ee0979, #ff6a00);
+  color: white;
+  padding: 3rem 6.1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+  transition: all 0.3s ease;
+  margin-left: 25px;
+  margin-top: 32px;
+  display: inline-block;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+#results2-btn {
+  background: linear-gradient(135deg, #edff4b, #36ff47);
+  /* color: white; */
+  padding: 3rem 6.7rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+  transition: all 0.3s ease;
+  margin-left: 25px;
+  margin-top: 32px;
+  display: inline-block;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+#result-btn:hover, #results2-btn:hover {
+  box-shadow: 0 15px 20px rgba(238, 9, 121, 0.5);
+  transform: translateY(-3px);
+  /* background: linear-gradient(135deg, #ee0979, #ff6a00); */
+}
+
+#result-btn:active, #results2-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 10px rgba(238, 9, 121, 0.2);
+}
+.edit-btn {
+  background: linear-gradient(135deg, #34C759, #2ECC71);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(52, 199, 89, 0.2);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
+}
+
+.delete-btn {
+  background: linear-gradient(135deg, #FF3B30, #E74C3C);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(255, 59, 48, 0.2);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
+}
+.save-btn {
+  background-color: #f2fd58 !important;
+  color: #fa9595 !important;
+  padding: 2px 5px; /* Reduced padding */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  transition: background-color 0.3s ease; /* Add a smooth transition effect */
+  font-size: 10px; /* Reduced font size */
+  margin-left: 5px; /* Reduced margin */
+}#modal-window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 500px;
+  max-width: 90%;
+}
+
+
+.modal-header {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.close-btn {
+  position: absolute;
+  background: linear-gradient(135deg, #FF3B30, #E74C3C);
+  color: white;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  z-index: 1001;
+}
+
+.close-btn:hover {
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #E74C3C, #FF3B30);
+}
+
+.close-btn:active {
+  transform: scale(0.95);
+}
+
+.close-btn::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover::before {
+  opacity: 1;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+}
+
+#add-question-btn {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#add-question-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Fade-in animation for form fields */
+
+#add-question-form .form-group input[type="text"],
+#add-question-form .form-group select {
+  animation: fadeIn 0.5s ease;
+  font-weight: bold;
+}
+#add-question-form .form-group textarea {
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Slide-in animation for "Add Question" button */
+
+#add-question-btn {
+  animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+#question {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  background-image: linear-gradient(to bottom, #fff, #f9f9f9);
+  background-size: 100% 200px;
+  background-position: 0% 100%;
+  transition: background-position 0.3s ease;
+}
+
+#question:focus {
+  border-color: #aaa;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  background-position: 0% 50%;
+}
+
+#question::placeholder {
+  color: #999;
+}
+#option-a, #option-b, #option-c, #option-d {
+  animation: animate-input 2s infinite;
+}
+#option-a {
+  background-color: #ffe6cc;
+}
+
+#option-b {
+  background-color: #c9e4ca;
+}
+
+#option-c {
+  background-color: #f2c4f7;
+}
+
+#option-d {
+  background-color: #c5cae9;
+}
+
+@keyframes animate-input {
+  0% {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+}
+.options-container {
+  background-color: #f7f7f7;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  overflow-y: auto;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.options-container::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f7f7f7;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.options-container::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.options-container::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#add-question-form input[type="text"]:focus {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(10px);
+  }
+}
+#test-management-btn {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: white;
+  padding: 3rem 5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+  transition: all 0.3s ease;
+  margin: 2rem auto;
+  display: block;
+  width: fit-content;
+}
+#test-management-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+}
+
+
+#test-management-btn:hover {
+  background-color: #3e8e41;
+}
+
+#test-management-btn:active {
+  background-color: #3e8e41;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+#test-management-btn {
+  float: left;
+}
+</style>
+<style>
+.professional-search-input {
+  width: 300px;
+  max-width: 100%;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 8px rgba(67, 97, 238, 0.3);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.professional-search-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 12px rgba(76, 201, 240, 0.7);
+}
+</style>
+<!-- Load dependencies globally -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+<script>
+  // Define export functions using global libraries
+  function exportTableToExcel(tableId, filename = '') {
+    const table = document.getElementById(tableId);
+    if (!table) {
+      alert('Table not found!');
+      return;
+    }
+
+    // Create a new Workbook
+    let workbook = XLSX.utils.book_new();
+
+    // Convert HTML table to worksheet
+    let worksheet = XLSX.utils.table_to_sheet(table);
+
+    // Append worksheet to workbook
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    // Generate Excel file and trigger download
+    XLSX.writeFile(workbook, filename ? filename + ".xlsx" : "exported_table.xlsx");
+  }
+
+  async function exportTableToPDF(tableId, title = '') {
+    const table = document.getElementById(tableId);
+    if (!table) {
+      alert('Table not found!');
+      return;
+    }
+
+    // Extract table headers
+    const headers = [];
+    const headerCells = table.querySelectorAll('thead tr th');
+    headerCells.forEach(headerCell => {
+      headers.push({ text: headerCell.innerText.trim(), style: 'tableHeader' });
+    });
+
+    // Extract table body data
+    const body = [];
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      const rowData = [];
+      const cells = row.querySelectorAll('td');
+      cells.forEach(cell => {
+        rowData.push(cell.innerText.trim());
+      });
+      body.push(rowData);
+    });
+
+    // Build pdfmake document definition
+    const docDefinition = {
+      content: [
+        { text: title || 'Exported Table', style: 'header', margin: [0, 0, 0, 10] },
+        {
+          style: 'tableExample',
+          table: {
+            headerRows: 1,
+            widths: Array(headers.length).fill('*'),
+            body: [
+              headers,
+              ...body
+            ]
+          },
+          layout: {
+            fillColor: function (rowIndex, node, columnIndex) {
+              return (rowIndex === 0) ? '#4361ee' : (rowIndex % 2 === 0) ? '#f3f6ff' : null;
+            }
+          }
+        }
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          margin: [0, 0, 0, 10]
+        },
+        tableExample: {
+          margin: [0, 5, 0, 15]
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 12,
+          color: 'white',
+          fillColor: '#4361ee',
+          alignment: 'center'
+        }
+      },
+      defaultStyle: {
+        fontSize: 10
+      }
+    };
+
+    // Generate and download PDF
+    pdfMake.createPdf(docDefinition).download(title ? title + '.pdf' : 'exported_table.pdf');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Delegate event listener for export buttons inside SweetAlert popup
+    document.body.addEventListener('click', (event) => {
+      const target = event.target;
+      try {
+        if (target.closest('#export-excel-btn')) {
+          console.log('Export to Excel button clicked');
+          exportTableToExcel('test-takers-table', 'test_taker_results');
+        } else if (target.closest('#export-pdf-btn')) {
+          console.log('Export to PDF button clicked');
+          exportTableToPDF('test-takers-table', 'Test Taker Results');
+        }
+      } catch (error) {
+        console.error('Error during export:', error);
+        alert('An error occurred during export. Please check the console for details.');
+      }
+    });
+  });
+</script>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="#">BHARATH AGROVET INDUSTRIES PVT LTD</a>
+            <button class="toggle-btn" id="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    <div class="sidebar">
+      <div class="sidebar-before">
+        <img src="https://bharathagrovet.com/images/bhart_argo_logo.png" alt="Company Logo">
+      </div>
+            <div class="user-profile">
+                <i class="fas fa-user-circle" style="font-size: 50px; color: #ffdb8d;"></i>
+                <br><br>
+                <b><span class="user-name">Admin</span></b>
+            </div>
+            <ul>
+              <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+              <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-chart-line"></i> Aptitude Test
+                </a>
+                <!-- <ul class="dropdown-menu">
+                  <li><a href="#" class="take-test" data-test-type="verbal-ability">Take Test</a></li>
+                </ul> -->
+              </li>
+              <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+              <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+  </div>
+  <div class="main-content">
+  <div class="card-header">
+<span style="text-align: left;">
+  <button id="test-management-btn">Manage Tests </button>
+  <button id="result-btn">Test-Taker</button>
+  <button id="results2-btn">Results</button>
+</span>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const backArrowBtn = document.getElementById('back-arrow-btn');
+    backArrowBtn.addEventListener('click', function() {
+      location.reload();
+    });
+  });
+</script>
+<div id="test-management-container" style="display: none;">
+  <div class="card">
+    <div class="card-header" style="display: flex; align-items: center; justify-content: flex-start; gap: 10px;">
+      <button id="back-arrow-btn" title="Refresh Page" style="background: none; border: none; color: var(--primary-color); font-size: 1.5rem; cursor: pointer;">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <h2 style="margin: 0;">Test Management</h2>
+    </div>
+    <div class="card-body">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+  <button id="add-question-btn" style="display: inline-flex; margin-bottom: 0;"><i class="fas fa-plus-circle"></i> Add Question</button>
+  <input type="text" id="search-questions-input" class="form-control" placeholder="Search questions..." style="margin-bottom: 0; max-width: 400px; box-shadow: 0 0 8px rgba(67, 97, 238, 0.3); border-radius: 0.5rem; border: 1px solid var(--primary-color);">
+</div>
+      <table id="questions-table">
+        <thead>
+          <tr>
+            <th>S.No.</th>
+            <th>Question</th>
+            <th>Options</th>
+            <th>Correct Answer</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="questions-tbody">
+          <!-- Questions will be populated here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card" id="modified-data-card" style="display: none;">
+    <div class="card-header">
+    </div>
+    <div class="card-body" id="modified-data-body">
+      <!-- Modified data will be displayed here -->
+    </div>
+  </div>
+</div>
+<div id="result-display" style="margin-top: 20px;"></div>
+
+<!-- Modal window for adding and editing questions -->
+<div id="modal-window" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Add Question</h2>
+      <button class="close-btn">&times;</button>
+    </div>
+<div class="modal-body">
+      <form id="add-question-form">
+        <div class="form-group">
+          <label for="question">Question:</label>
+          <div class="input-with-icon">
+            <textarea id="question" name="question" class="form-control" rows="3" required></textarea>
+            <!-- <label for="question-image" class="file-icon" title="Upload image"> -->
+              <!-- <i class="fas fa-image"></i> -->
+            </label>
+<input type="file" id="question-image" name="question-image" accept="image/jpeg,application/pdf" class="file-input" />
+            <span class="file-name" id="question-image-name"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="options">Options:</label>
+          <div class="options-container">
+            <div class="option-input">
+              <span>A)</span>
+              <div class="input-with-icon">
+                <input type="text" id="option-a" name="option-a" class="form-control" required>
+                <!-- <label for="option-a-image" class="file-icon" title="Upload image"> -->
+                  <!-- <i class="fas fa-image"></i> -->
+                </label>
+<input type="file" id="option-a-image" name="option-a-image" accept="image/jpeg,application/pdf" class="file-input" />
+                <!-- <span class="file-name" id="option-a-image-name"></span> -->
+              </div>
+            </div>
+            <div class="option-input">
+              <span>B)</span>
+              <div class="input-with-icon">
+                <input type="text" id="option-b" name="option-b" class="form-control" required>
+                <!-- <label for="option-b-image" class="file-icon" title="Upload image"> -->
+                  <!-- <i class="fas fa-image"></i> -->
+                </label>
+<!-- <input type="file" id="option-b-image" name="option-b-image" accept="image/jpeg,application/pdf" class="file-input" /> -->
+                <!-- <span class="file-name" id="option-b-image-name"></span> -->
+              </div>
+            </div>
+            <div class="option-input">
+              <span>C)</span>
+              <div class="input-with-icon">
+                <input type="text" id="option-c" name="option-c" class="form-control" required>
+                <!-- <label for="option-c-image" class="file-icon" title="Upload image"> -->
+                  <!-- <i class="fas fa-image"></i> -->
+                </label>
+<input type="file" id="option-c-image" name="option-c-image" accept="image/jpeg,application/pdf" class="file-input" />
+                <span class="file-name" id="option-c-image-name"></span>
+              </div>
+            </div>
+            <div class="option-input">
+              <span>D)</span>
+              <div class="input-with-icon">
+                <input type="text" id="option-d" name="option-d" class="form-control" required>
+                <!-- <label for="option-d-image" class="file-icon" title="Upload image"> -->
+                  <!-- <i class="fas fa-image"></i> -->
+                </label>
+<input type="file" id="option-d-image" name="option-d-image" accept="image/jpeg,application/pdf" class="file-input" />
+                <span class="file-name" id="option-d-image-name"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="correct-answer">Correct Answer:</label>
+          <select id="correct-answer" name="correct-answer" class="form-control" required>
+            <option value="" disabled selected>Choose one</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-top: 20px;">
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 10px; background: linear-gradient(135deg, var(--primary-color), var(--accent-color));">
+            <i class="fas fa-check-circle"></i> Submit Answer
+          </button>
+        </div>
+        <button id="add-question-btn" type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px; display: none;">Add Question</button>
+        <button id="save-question-btn" type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px; display: none;">Save Changes</button>
+      </form>
+    </div>
+  </div>
+</div>
+<style>
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-with-icon input[type="text"],
+.input-with-icon textarea {
+  flex: 1;
+  padding-right: 2.5rem; /* space for icon */
+}
+.file-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #666;
+  font-size: 1.2rem;
+  z-index: 2;
+}
+.file-icon:hover {
+  color: #4361ee;
+}
+.file-input {
+  display: none;
+}
+.file-name {
+  margin-left: 10px;
+  font-size: 0.85rem;
+  color: #444;
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  function setupFileInput(fileInputId, fileNameId) {
+    const fileInput = document.getElementById(fileInputId);
+    const fileNameSpan = document.getElementById(fileNameId);
+    if (!fileInput || !fileNameSpan) return;
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        fileNameSpan.textContent = fileInput.files[0].name;
+      } else {
+        fileNameSpan.textContent = '';
+      }
+    });
+  }
+  setupFileInput('question-image', 'question-image-name');
+  setupFileInput('option-a-image', 'option-a-image-name');
+  setupFileInput('option-b-image', 'option-b-image-name');
+  setupFileInput('option-c-image', 'option-c-image-name');
+  setupFileInput('option-d-image', 'option-d-image-name');
+});
+</script>
+<style>
+.back-to-dashboard-sidebar:hover {
+  color: #fff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+</style>
+
+<!-- CSS -->
+<style>
+  #test-management-container {
+    display: none;
+  }
+#questions-table {
+  width: 100%;
+  margin-bottom: 2rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  transition: box-shadow 0.3s ease;
+}
+
+#questions-table:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+#questions-table thead {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-bottom: 2px solid #2a3eb1;
+}
+
+#questions-table th {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  font-weight: 600;
+  vertical-align: middle;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  user-select: none;
+}
+
+#questions-table th:last-child {
+  border-right: none;
+}
+
+#questions-table th:nth-child(4),
+#questions-table td:nth-child(4) {
+  text-align: center;
+  vertical-align: middle;
+  width: 100px;
+}
+
+#questions-table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+}
+
+#questions-table tbody tr:nth-child(even) {
+  background-color: #f9faff;
+}
+
+#questions-table tbody tr:hover {
+  background-color: #e6f0ff;
+  transition: background-color 0.3s ease;
+}
+
+#questions-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Added spacing between Options and Actions columns */
+#questions-table th:nth-child(3),
+#questions-table td:nth-child(3) {
+  padding-right: 2rem; /* Increase right padding for Options column */
+}
+
+#questions-table th:nth-child(5),
+#questions-table td:nth-child(5) {
+  padding-left: 2rem; /* Increase left padding for Actions column */
+  min-width: 120px; /* Ensure enough width for action buttons */
+}
+#questions-table th:nth-child(5) {
+  text-align: center; /* Center the Actions column header text */
+}
+#questions-table td:nth-child(5) {
+  text-align: right; /* Align Actions column content to the right */
+}
+
+/* Style buttons in Actions column */
+.edit-btn, .delete-btn {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 0.4rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.edit-btn {
+  background: linear-gradient(135deg, #34C759, #2ECC71);
+  color: white;
+}
+
+.edit-btn:hover {
+  background: linear-gradient(135deg, #28a745, #239b4a);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+.delete-btn {
+  background: linear-gradient(135deg, #FF3B30, #E74C3C);
+  color: white;
+  margin-left: 0.5rem;
+}
+
+.delete-btn:hover {
+  background: linear-gradient(135deg, #e02a1b, #c82318);
+  box-shadow: 0 4px 12px rgba(224, 42, 27, 0.4);
+}
+
+#add-question-btn {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#add-question-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(67, 97, 238, 0.5);
+}
+
+#add-question-btn i {
+  font-size: 1.2rem;
+}
+  #modal-window {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+.edit-btn:hover, .delete-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.edit-btn i, .delete-btn i {
+  font-size: 0.9rem;
+}
+</style>
+<br><br><br>
+<!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  // Global variables
+  let questions = [];
+  let currentEditId = null;
+
+  // Load questions from API
+  async function loadQuestions() {
+    try {
+      const response = await axios.get('/api/questions');
+      questions = response.data.reverse();
+      renderQuestions();
+    } catch (error) {
+      Swal.fire('Error!', 'Failed to load questions: ' + error.message, 'error');
+    }
+  }
+
+
+  // DOM Ready
+  document.addEventListener('DOMContentLoaded', function() {
+    loadQuestions();
+    setupEventListeners();
+  });
+
+  function setupEventListeners() {
+// Manage Test button
+document.getElementById("test-management-btn").addEventListener("click", function() {
+  document.getElementById("test-management-container").style.display = "block";
+  this.style.display = "none";
+  // Hide result button and results2 button when manage test is clicked
+  document.getElementById("result-btn").style.display = "none";
+  document.getElementById("results2-btn").style.display = "none";
+});
+
+document.getElementById("result-btn").addEventListener("click", function() {
+  window.location.href = 'test_taker_results.html';
+});
+
+    // Add Question button
+    document.getElementById("add-question-btn").addEventListener("click", function() {
+      document.getElementById("modal-window").style.display = "block";
+      currentEditId = null;
+      resetForm();
+      document.getElementById('add-question-btn').style.display = 'block';
+      document.getElementById('save-question-btn').style.display = 'none';
+    });
+
+    // Close modal and show Add Question button
+    document.querySelector('.close-btn').addEventListener('click', function() {
+      document.getElementById("modal-window").style.display = "none";
+      document.getElementById('add-question-btn').style.display = 'block'; // Show Add Question button again
+    });
+
+    // Form submission
+    document.getElementById("add-question-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      await saveQuestion();
+    });
+
+    // Save button click
+    document.getElementById("save-question-btn").addEventListener("click", async function(e) {
+      e.preventDefault();
+      await saveQuestion();
+    });
+  }
+
+
+  // Validate options to prevent duplicates
+  function validateOptions() {
+    const options = [
+      document.getElementById("option-a").value,
+      document.getElementById("option-b").value,
+      document.getElementById("option-c").value,
+      document.getElementById("option-d").value
+    ];
+    
+    // Check for duplicate options
+    const uniqueOptions = new Set(options);
+    if (uniqueOptions.size < options.length) {
+      Swal.fire('Error!', 'Please provide unique options for each answer choice', 'error');
+      return false;
+    }
+    
+    // Check if correct answer is selected
+    const correctAnswer = document.getElementById("correct-answer").value;
+    if (!correctAnswer) {
+      Swal.fire('Error!', 'Please select the correct answer', 'error');
+      return false;
+    }
+    
+    return true;
+  }
+
+  // Save question to API
+  async function saveQuestion() {
+    if (!validateOptions()) return;
+    
+    const questionData = {
+      questionText: document.getElementById("question").value,
+      options: [
+        document.getElementById("option-a").value,
+        document.getElementById("option-b").value,
+        document.getElementById("option-c").value,
+        document.getElementById("option-d").value
+      ],
+      correctAnswer: document.getElementById("correct-answer").value
+    };
+
+    try {
+      if (currentEditId) {
+        await axios.put(`/api/questions/${currentEditId}`, questionData);
+        Swal.fire('Success!', 'Question updated successfully', 'success');
+      } else {
+        await axios.post('/api/questions', questionData);
+        Swal.fire('Success!', 'Question added successfully', 'success');
+      }
+      document.getElementById("modal-window").style.display = "none"; // Close modal after saving
+      document.getElementById('add-question-btn').style.display = 'block'; // Show Add Question button again
+      loadQuestions();
+    } catch (error) {
+      Swal.fire('Error!', 'Failed to save question: ' + error.message, 'error');
+    }
+  }
+
+  // Render questions in table
+  function renderQuestions() {
+    const tableBody = document.getElementById("questions-tbody");
+    tableBody.innerHTML = '';
+
+    questions.forEach((question, index) => {
+      const row = tableBody.insertRow();
+      function splitTextByLength(text, length) {
+        const result = [];
+        for (let i = 0; i < text.length; i += length) {
+          result.push(text.substring(i, i + length));
+        }
+        return result.join('<br>');
+      }
+
+      const formattedQuestionText = splitTextByLength(question.questionText, 60);
+      row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${formattedQuestionText}</td>
+        <td><ul style="list-style-type:none; padding-left:0; margin:0;">${question.options.map((opt, i) => `<li>${String.fromCharCode(65 + i)}) ${opt}</li>`).join('')}</ul></td>
+        <td>${question.correctAnswer}</td>
+        <td style="display: flex; justify-content: center; align-items: center; gap: 0.5rem;">
+          <button class="edit-btn" data-id="${question._id}"><i class="fas fa-edit"></i> Edit</button>
+          <button class="delete-btn" data-id="${question._id}"><i class="fas fa-trash-alt"></i> Delete</button>
+        </td>
+      `;
+    });
+
+    // Add event listeners to edit/delete buttons
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', editQuestion);
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', deleteQuestion);
+    });
+  }
+
+  // Add search filter functionality for questions table
+  document.getElementById('search-questions-input').addEventListener('input', function() {
+    const filter = this.value.toLowerCase();
+    const tableBody = document.getElementById('questions-tbody');
+    const rows = tableBody.querySelectorAll('tr');
+    rows.forEach(row => {
+      const questionCell = row.cells[1].textContent.toLowerCase();
+      if (questionCell.indexOf(filter) > -1) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+  
+  // Remove duplicate event listener for save-btn if any
+  // Removed this incorrect removeEventListener block to avoid confusion
+
+
+  // Edit question
+  function editQuestion(e) {
+    const id = e.target.dataset.id;
+    const question = questions.find(q => q._id === id);
+    if (!question) return;
+
+    currentEditId = id;
+    document.getElementById("modal-window").style.display = "block";
+    document.getElementById('add-question-btn').style.display = 'none';
+    document.getElementById("question").value = question.questionText;
+    document.getElementById("option-a").value = question.options[0];
+    document.getElementById("option-b").value = question.options[1];
+    document.getElementById("option-c").value = question.options[2];
+    document.getElementById("option-d").value = question.options[3];
+    document.getElementById("correct-answer").value = question.correctAnswer;
+  }
+
+
+  // Delete question
+  async function deleteQuestion(e) {
+    const id = e.target.dataset.id;
+    const result = await Swal.fire({
+      title: 'Delete Confirmation',
+      text: 'Are you sure you want to delete this question?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`/api/questions/${id}`);
+        Swal.fire('Success!', 'Question deleted successfully', 'success');
+        loadQuestions();
+      } catch (error) {
+        Swal.fire('Error!', 'Failed to delete question: ' + error.message, 'error');
+      }
+    }
+  }
+
+  // Helper functions
+function resetForm() {
+    document.getElementById("question").value = '';
+    document.getElementById("option-a").value = '';
+    document.getElementById("option-b").value = '';
+    document.getElementById("option-c").value = '';
+    document.getElementById("option-d").value = '';
+    document.getElementById("correct-answer").value = '';
+  }
+
+
+// Event listener for the "Save" button
+document.addEventListener("click", function(event) {
+  if (event.target.classList.contains("save-btn")) {
+    const row = event.target.parentNode.parentNode;
+    const questionCell = row.cells[1];
+    const optionsCell = row.cells[2];
+    const correctAnswerCell = row.cells[3];
+
+    // Get the edited values
+    const editedQuestion = document.getElementById("edit-question").value;
+    const editedOptionA = document.getElementById("edit-option-a").value;
+    const editedOptionB = document.getElementById("edit-option-b").value;
+    const editedOptionC = document.getElementById("edit-option-c").value;
+    const editedOptionD = document.getElementById("edit-option-d").value;
+    const editedCorrectAnswer = document.getElementById("edit-correct-answer").value;
+
+    // Check if all fields are filled
+    if (editedQuestion !== "" && editedOptionA !== "" && editedOptionB !== "" && editedOptionC !== "" && editedOptionD !== "" && editedCorrectAnswer !== "") {
+      // Update the question, options, and correct answer
+      questionCell.innerHTML = `A) ${editedOptionA}, B) ${editedOptionB}, C) ${editedOptionC}, D) ${editedOptionD}`;
+      optionsCell.innerHTML = `${editedOptionA}, ${editedOptionB}, ${editedOptionC}, ${editedOptionD}`;
+      correctAnswerCell.innerHTML = editedCorrectAnswer;
+
+      // Remove the "Save" button
+      event.target.remove();
+    } else {
+      alert("Please fill all fields.");
+    }
+  }
+});
+</script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+     $(document).ready(function() {
+          $('#sidebar-toggle').click(function() {
+              if ($('.sidebar').hasClass('active')) {
+                  $('.sidebar').removeClass('active');
+                  $('.main-content').removeClass('active');
+                  $(this).find('i').removeClass('fa-times').addClass('fa-bars');
+
+                } else {
+                  $('.sidebar').addClass('active');
+                  $('.main-content').addClass('active');
+                  $(this).find('i').removeClass('fa-bars').addClass('fa-times');
+              }
+          });
+          $('.fa-sign-out-alt').parent().click(function() {
+  window.location.href = 'login.html';
+});
+          // Add event listener to the dropdown toggle
+          $('.dropdown-toggle').click(function() {
+              $(this).next('.dropdown-menu').toggle();
+          });
+
+          // Redirect results2-btn click to all_test_submissions.html page
+          $('#results2-btn').off('click').on('click', function() {
+            window.location.href = 'all_test_submissions.html';
+          });
+        });
+// Add event listener to the logout button
+$('.fa-sign-out-alt').parent().click(function() {
+    window.location.href = 'login.html';
+});
+// Add event listener to the proceed button
+$('#proceed-btn').click(function() {
+    document.querySelector('.notification').style.display = 'none';
+    document.querySelector('.form-container').style.display = 'block';
+});
+// Add event listener to the form submission
+$('#test-taker-form').submit(function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+    console.log(data);
+  });
+  document.getElementById("add-question-btn").addEventListener("click", function() {
+  document.getElementById("modal-window").style.display = "block";
+});
+// Get the close button
+const closeButton = document.querySelector('.close-btn');
+
+// Add an event listener to the close button
+closeButton.addEventListener('click', function() {
+  // Get the modal window
+  const modalWindow = document.getElementById('modal-window');  
+});
+</script>
+</body>
+</html>
