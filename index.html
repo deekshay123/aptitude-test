@@ -354,7 +354,11 @@
                 loadingSpinner.style.display = 'none'; // Hide loading spinner
                 alert('Invalid username or password. Please try again.'); // Improved error message
             }
-        });
+            fetch('https://aptitude-test-1.onrender.com/api/data')
+               .then(response => response.json())
+               .then(data => console.log(data))
+               .catch(err => console.error(err));
+            });
     </script>
 </body>
 </html>
