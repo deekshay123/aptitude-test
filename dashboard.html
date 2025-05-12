@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptitude Test Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+      :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4cc9f0;
+      --dark-color: #1a1a2e;
+      --light-color: #f8f9fa;
+    }
+   body {
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+  color: #212529;
+  line-height: 1.6;
+}
+
+.navbar {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  color: #ffffff;
+  padding: 1.36rem;
+  text-align: center;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-size: 36px;
+  -webkit-text-fill-color: rgb(255, 255, 255);
+  font-weight: bold;
+  margin: 0 auto;
+  display: block;
+}
+
+.sidebar {
+    background: linear-gradient(to bottom, var(--dark-color), #16213e);
+
+    padding: 1rem;
+    position: fixed;
+    top: 110px;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s ease;
+    z-index: 1000;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.2s ease;
+}
+
+.sidebar li:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+.sidebar li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar li a:hover {
+    color: #FFC107;
+}
+
+.sidebar li a.active {
+    color: #4CAF50;
+}
+
+.sidebar li button {
+    background-color: #2196F3;
+    border: none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar li button:hover {
+    background-color: #87CEEB;
+}
+
+.sidebar li button.active {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar li i {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.sidebar li span {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.sidebar-before {
+  /* background-image: linear-gradient(to right, #ff9900, #ff6600); */
+  height: 110px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  z-index: 1000;
+  /* border-bottom: 1px solid #455a64; Added border */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Added shadow */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar-before img {
+  height: 90px;
+  width: 90px;
+  object-fit: cover;
+  border: 5px solid #ffff00;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.sidebar.active {
+  left: -250px;
+}
+
+.navbar-nav li {
+  margin-right: 20px;
+}
+
+.navbar-nav a {
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.navbar-nav a:hover {
+  color: #FFC107;
+}
+
+.navbar-nav a.active {
+  color: #4CAF50;
+}
+
+.card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.card-header h2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2c3e50;
+  text-align: center;
+  margin: 0;
+  padding: 1rem;
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+.card-body {
+    background-color: #f2f2f2;
+    padding: 1.5rem;
+}
+
+.card-body img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: animate 5s infinite;
+}
+
+@keyframes animate {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.card-body p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #333;
+}
+.dropdown-menu {
+    background: rgba(0,0,0,0.2);
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.dropdown-menu li {
+    padding: 0.6rem 1rem;
+    margin: 0;
+}
+
+.dropdown-menu li a {
+    font-size: 0.9rem;
+}
+
+.dropdown-menu li:hover {
+    background: rgba(255,255,255,0.1);
+}
+.card-body button {
+    background-color: #fafcfa;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.card-body button:hover {
+    background-color: #e5ede5;
+}
+
+.card-footer {
+    background-color: #f7f7f7;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    text-align: right;
+}
+
+.card-footer small {
+    font-size: 14px;
+    color: #666;
+}
+
+.card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(-8px) scale(1.02);
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.card:hover .card-header {
+    background-color: #e7e7e7;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  border: 5px solid #d8d800;
+  border-radius: 0;
+}
+
+.logo img {
+  height: 100px;
+  object-fit: cover;
+  border-radius: 0;
+  align-items: left;
+}
+
+.user-profile {
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 70px;
+  text-align: center;
+}
+
+.user-name {
+  text-align: center;
+  color: #009e91;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 5px;
+  display: block;
+  margin-bottom: 70px;
+  background-color: #ffdede;
+  padding: 7px;
+  border-radius: 10px;
+  width: fit-content;
+  margin: 0 auto;
+  position: relative;
+  top: -20px;
+}
+
+.main-content {
+  margin-left: 250px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+  .sidebar {
+    transform: translateX(-100%);
+    width: 280px;
+  }
+  .sidebar.active {
+    transform: translateX(0);
+    box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+  }
+}
+
+@media (max-width: 576px) {
+  .card {
+    margin-bottom: 1rem;
+  }
+  .navbar {
+    padding: 0.5rem 1rem;
+  }
+}
+.toggle-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s;
+        outline: none;
+    }
+
+    .toggle-btn:hover {
+        transform: rotate(90deg);
+    }
+    
+    .toggle-btn:focus {
+        outline: none;
+        box-shadow: none;
+    }
+.main-content.active {
+  margin-left: 0;
+}
+
+.footer {
+  background-color: #212121;
+  color: #ffffff;
+  text-align: center;
+  padding: 1rem;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer a {
+  color: #FFC107;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #45a049;
+}
+
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.alert.success {
+  background-color: #4CAF50;
+}
+
+.alert.info {
+  background-color: #2196F3;
+}
+
+.alert.warning {
+  background-color: #ff9800;
+}
+
+.alert.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+</style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="#">BHARATH AGROVET INDUSTRIES PVT LTD</a>
+            <button class="toggle-btn" id="sidebar-toggle">
+              <i class="fas fa-bars"></i>
+          </button>
+        </div>
+    </nav>
+    <div class="sidebar">
+      <div class="sidebar-before">
+        <img src="https://bharathagrovet.com/images/bhart_argo_logo.png" alt="Company Logo">
+      </div>
+        <div class="sidebar-content">
+            <div class="user-profile">
+                <i class="fas fa-user-circle" style="font-size: 50px; color: #ffdb8d;"></i>
+                <br><br>
+                <b><span class="user-name">USER</span></b>
+            </div>
+            <ul>
+              <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+              <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-chart-line"></i> Aptitude Test
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="#" class="take-test">Take Test</a></li>
+                </ul>
+              </li>
+              <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+              <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="card">
+            <div class="card-header">
+                <h2>Aptitude Dashboard</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Verbal Ability</h2>
+                            </div>
+                            <div class="card-body">
+                                <img src="https://aptitude-test.com/wp-content/uploads/2023/12/bigstock-Close-Up-Photo-Of-Beautiful-Yo-215907727-1.jpg" alt="Verbal Ability Image" class="card-image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Quantitative Ability</h2>
+                            </div>
+                            <div class="card-body">
+                                <img src="https://blogassets.leverageedu.com/blog/wp-content/uploads/2020/03/22210204/Quantitative-Aptitude.jpg" alt="Quantitative Ability Image" class="card-image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Logical Reasoning</h2>
+                            </div>
+                            <div class="card-body">
+                                <img src="https://bharath-agro.intellhrms.com/assets/images/client-login/hero-image2.jpeg" alt="Logical Reasoning Image" class="card-image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br><br>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                              <h2>union Development</h2>
+                            </div>
+                            <div class="card-body">
+                                <img src="https://www.matrrix.in/images/blog/1000xnull/understanding-5-areas-of-personal-development-feature641d6028520d78.69103709.webp" alt="Personality Development Image" class="card-image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Emotional Intelligence</h2>
+                            </div>
+                            <div class="card-body">
+                                <img src="https://bharath-agro.intellhrms.com/assets/images/client-login/hero-image.png" alt="Emotional Intelligence Image" class="card-image">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Time Management</h2>
+                            </div>
+                            <div class="card-body">
+                                <img src="https://static.vecteezy.com/system/resources/thumbnails/014/526/613/small_2x/personal-growth-self-improvement-and-self-development-concept-man-watering-that-growing-plant-from-the-brain-as-metaphor-growth-personality-flat-illustration-vector.jpg" alt="Time Management Image" class="card-image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+       $(document).ready(function() {
+            $('#sidebar-toggle').click(function() {
+                if ($('.sidebar').hasClass('active')) {
+                    $('.sidebar').removeClass('active');
+                    $('.main-content').removeClass('active');
+                    $(this).find('i').removeClass('fa-times').addClass('fa-bars');
+                } else {
+                    $('.sidebar').addClass('active');
+                    $('.main-content').addClass('active');
+                    $(this).find('i').removeClass('fa-bars').addClass('fa-times');
+                }
+            });
+$('.fa-sign-out-alt').parent().click(function() {
+    window.location.href = 'login.html';
+});
+            // Add event listener to the dropdown toggle
+            $('.take-test').click(function(e) {
+                e.stopPropagation(); // Prevent the dropdown from closing
+                // Hide the Take Test button and its parent dropdown menu to hide background and text
+                $(this).closest('.dropdown-menu').hide();
+                $(this).hide();
+                var testType = $(this).data('test-type');
+  
+ // Update the card body content
+var content = `
+ <style>
+  /* Advanced Form Styles */
+  .form-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .form-header h2 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .form-header p {
+    color: #7f8c8d;
+    font-size: 1rem;
+  }
+
+  .form-header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #3498db, #2ecc71);
+    margin: 1rem auto;
+    border-radius: 2px;
+  }
+
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    flex: 1;
+    min-width: 250px;
+    position: relative;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #2c3e50;
+    font-size: 0.9rem;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    background-color: white;
+  }
+
+  .form-control-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7f8c8d;
+  font-size: 1rem;
+}
+
+  select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+  }
+
+  textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  .submit-btn {
+    display: block;
+    width: 200px;
+    margin: 2rem auto 0;
+    padding: 0.8rem;
+    background: linear-gradient(135deg, #3498db, #2ecc71);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .submit-btn:active {
+    transform: translateY(0);
+  }
+
+  /* Floating Labels Animation */
+  .floating-label-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .floating-label {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  color: #7f8c8d;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  background: white;
+  padding: 0 5px;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.floating-label-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.form-control:focus + .floating-label,
+.form-control:not(:placeholder-shown) + .floating-label {
+  top: -10px;
+  left: 15px;
+  font-size: 12px;
+  color: #3498db;
+}
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .form-row {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .form-group {
+      min-width: 100%;
+    }
+  }
+</style>
+
+<div class="form-container">
+  <div class="form-header">
+    <h2>Test Taker Information</h2>
+    <p>Please provide your details to proceed with the aptitude test</p>
+  </div>
+  
+  <form id="test-taker-form">
+    <div class="form-row">
+      <div class="form-group">
+        <div class="floating-label-group">
+          <input type="text" id="name" name="name" class="form-control" placeholder=" " required>
+          <label class="floating-label" for="name">Full Name</label>
+          <i class="fas fa-user form-control-icon"></i>
+        </div>
+      </div>
+      
+      <div class="form-group">
+                    <div class="floating-label-group">
+                        <select id="education" name="education" class="form-control" required style="height: 56px; padding: 1rem 1.2rem; font-size: 1rem;">
+                            <option value="" selected disabled>Select Education Level</option>
+                            <option value="high_school">High School</option>
+                            <option value="diploma">Diploma</option>
+                            <option value="bachelors_degree">Bachelor's Degree</option>
+                            <option value="masters_degree">Master's Degree</option>
+                            <option value="doctoral_degree">Doctoral Degree</option>
+                        </select>
+                        <label class="floating-label" for="education">Education Level</label>
+                        <i class="fas fa-graduation-cap form-control-icon"></i>
+                    </div>
+                </div>
+            </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <div class="floating-label-group">
+          <input type="text" id="field_of_study" name="field_of_study" class="form-control" placeholder=" " required>
+          <label class="floating-label" for="field_of_study">Field of Study</label>
+          <i class="fas fa-book form-control-icon"></i>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <div class="floating-label-group">
+          <input type="text" id="institution" name="institution" class="form-control" placeholder=" " required>
+          <label class="floating-label" for="institution">Institution</label>
+          <i class="fas fa-university form-control-icon"></i>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <div class="floating-label-group">
+          <textarea id="certifications" name="certifications" class="form-control" placeholder=" "></textarea>
+          <label class="floating-label" for="certifications">Certifications (Optional)</label>
+          <i class="fas fa-comment form-control-icon"></i>
+        </div>
+      </div>
+    </div>
+    
+    <button type="submit" class="submit-btn">
+      <span>Proceed to Test</span>
+      <i class="fas fa-arrow-right"></i>
+    </button>
+  </form>
+</div>
+`;
+
+$('.card-body').html(content);
+// Add event listener to the logout button
+$('.fa-sign-out-alt').parent().click(function() {
+    window.location.href = 'login.html';
+});
+// Add event listener to the proceed button
+$('#proceed-btn').click(function() {
+    document.querySelector('.notification').style.display = 'none';
+    document.querySelector('.form-container').style.display = 'block';
+});
+// Add event listener to the form submission
+    $('#test-taker-form').submit(async function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+        console.log(data);
+
+        try {
+            const response = await axios.post('/api/testtakers', data);
+            console.log('Test taker data saved:', response.data);
+            // Redirect to test begin page after successful save
+            window.location.href = 'test_begin.html';
+        } catch (error) {
+            console.error('Failed to save test taker data:', error);
+            let message = 'Failed to save your data. Please try again.';
+            if (error.response && error.response.data && error.response.data.error) {
+                message += '\nError: ' + error.response.data.error;
+            }
+            alert(message);
+        }
+    });
+});
+});
+</script>
+</body>
+</html>

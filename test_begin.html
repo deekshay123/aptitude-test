@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptitude Test Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    :root {
+        --primary: #4361ee;
+        --secondary: #3f37c9;
+        --accent: #4895ef;
+        --dark: #1b263b;
+        --light: #f8f9fa;
+        --success: #4cc9f0;
+        --warning: #f72585;
+        --danger: #ef233c;
+    }
+    
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f5f7fa;
+        color: var(--dark);
+        margin: 0;
+        padding: 0;
+        transition: all 0.3s ease;
+    }
+
+    .navbar {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        padding: 1rem 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .navbar-brand {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: white;
+        display: flex;
+        align-items: center;
+    }
+
+    .navbar-brand i {
+        margin-right: 10px;
+        font-size: 1.5rem;
+    }
+
+    .sidebar {
+        background: white;
+        width: 280px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+        transform: translateX(-100%);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 999;
+        padding-top: 80px;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .sidebar-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+    }
+
+    .user-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+        border: 3px solid var(--accent);
+    }
+
+    .user-info h4 {
+        margin: 0;
+        font-size: 1.1rem;
+    }
+
+    .user-info p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    .sidebar-menu {
+        padding: 1rem 0;
+    }
+
+    .sidebar-menu a {
+        display: flex;
+        align-items: center;
+        padding: 0.8rem 1.5rem;
+        color: #495057;
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 0 8px 8px 0;
+        margin: 0.2rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .sidebar-menu a::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 3px;
+        background: var(--primary);
+        transform: scaleY(0);
+        transform-origin: bottom;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar-menu a:hover {
+        background-color: rgba(67, 97, 238, 0.05);
+        color: var(--primary);
+        transform: translateX(4px);
+    }
+
+    .sidebar-menu a:hover::before {
+        transform: scaleY(1);
+    }
+
+    .sidebar-menu a.active {
+        background-color: rgba(67, 97, 238, 0.1);
+        color: var(--primary);
+        font-weight: 500;
+    }
+
+    .sidebar-menu a.active::before {
+        transform: scaleY(1);
+    }
+
+    .sidebar-menu i {
+        margin-right: 10px;
+        font-size: 1.1rem;
+        width: 20px;
+        text-align: center;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .main-content.active {
+        margin-left: 280px;
+    }
+
+    .toggle-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: left;
+    }
+
+    .toggle-btn:hover {
+        transform: rotate(90deg);
+    }
+
+    .test-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        overflow: hidden;
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .test-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        padding: 1.5rem;
+    }
+
+    .card-header h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .notification {
+        background: white;
+        border-radius: 10px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        margin-bottom: 2rem;
+    }
+
+    .notification h2 {
+        color: var(--dark);
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+    }
+
+    .btn {
+        padding: 0.8rem 1.8rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        margin: 0 0.5rem;
+    }
+
+    .btn-primary {
+        background: var(--primary);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: var(--secondary);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+
+    .btn-secondary {
+        background: var(--light);
+        color: var(--dark);
+        border: 1px solid #dee2e6;
+    }
+
+    .btn-secondary:hover {
+        background: #e9ecef;
+        transform: translateY(-2px);
+    }
+
+    .btn-danger {
+        background: var(--danger);
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #d90429;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(239, 35, 60, 0.3);
+    }
+
+    .btn-success {
+        background: var(--success);
+        color: white;
+    }
+
+    .btn-success:hover {
+        background: #3a86ff;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(76, 201, 240, 0.3);
+    }
+
+    .countdown-container {
+        background: white;
+        border-radius: 10px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        margin-bottom: 2rem;
+    }
+
+    #countdown-timer {
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 1rem 0;
+    }
+
+    #countdown-message {
+        font-size: 1.2rem;
+        color: #6c757d;
+        margin-bottom: 1.5rem;
+    }
+
+    .test-container {
+        display: none;
+    }
+
+    .question-container {
+        margin-bottom: 2rem;
+    }
+
+    .question-text {
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        color: var(--dark);
+    }
+
+    .options-container {
+        margin-bottom: 2rem;
+    }
+
+    .option-item {
+        display: block;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .option-item:hover {
+        background: rgba(67, 97, 238, 0.1);
+        border-color: var(--primary);
+    }
+
+    .option-item.selected {
+        background: rgba(67, 97, 238, 0.2);
+        border-color: var(--primary);
+    }
+
+    .option-input {
+        margin-right: 10px;
+    }
+
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+    }
+
+    .progress-container {
+        margin-bottom: 2rem;
+    }
+
+    .progress-bar {
+        height: 10px;
+        background: #e9ecef;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .progress {
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        width: 0;
+        transition: width 0.5s ease;
+    }
+
+    .progress-text {
+        text-align: right;
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-top: 0.5rem;
+    }
+
+    .timer-container {
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .timer-icon {
+        color: var(--warning);
+        margin-right: 10px;
+        font-size: 1.2rem;
+    }
+
+    .timer-text {
+        font-weight: 500;
+        color: var(--dark);
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 250px;
+        }
+        
+        .main-content {
+            padding: 1rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .btn {
+            padding: 0.7rem 1.5rem;
+            margin: 0.3rem;
+        }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease forwards;
+    }
+
+    .loading-spinner {
+        display: none;
+        text-align: center;
+        margin: 2rem 0;
+    }
+
+    .spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid rgba(67, 97, 238, 0.2);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    </style>
+    <style>
+      /* New styles for results tables */
+      #results-section {
+        display: none;
+        margin-top: 2rem;
+      }
+
+      #results-section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        color: var(--primary);
+      }
+
+      table.results-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      table.results-table thead {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+      }
+
+      table.results-table th,
+      table.results-table td {
+        padding: 12px 15px;
+        text-align: center;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      table.results-table tbody tr:hover {
+        background-color: rgba(67, 97, 238, 0.1);
+      }
+
+      .correct {
+        color: var(--success);
+        font-weight: 600;
+      }
+
+      .incorrect {
+        color: var(--danger);
+        font-weight: 600;
+      }
+
+      .checkmark {
+        color: var(--success);
+        font-weight: 700;
+      }
+
+      .crossmark {
+        color: var(--danger);
+        font-weight: 700;
+      }
+
+      #restart-btn {
+        background: var(--primary);
+        color: white;
+        padding: 0.8rem 1.8rem;
+        border-radius: 8px;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s;
+      }
+
+      #restart-btn:hover {
+        background: var(--secondary);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <button class="toggle-btn" id="sidebar-toggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <a class="navbar-brand" href="#">
+          <i class="fas fa-brain"></i> Aptitude Test
+        </a>
+        <div style="width: 40px"></div>
+        <!-- Spacer for balance -->
+      </div>
+    </nav>
+
+    <!-- <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img
+          src="https://ui-avatars.com/api/?name=User&background=4361ee&color=fff"
+          alt="User"
+          class="user-avatar"
+        />
+      </div>
+      <div class="sidebar-menu">
+        <a href="#" class="active" data-section="dashboard">
+          <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="#" data-section="tests">
+          <i class="fas fa-clipboard-list"></i> My Tests
+        </a>
+        <a href="#" data-section="results">
+          <i class="fas fa-chart-line"></i> Results
+        </a>
+        <a href="#" data-section="settings">
+          <i class="fas fa-cog"></i> Settings
+        </a>
+        <a href="#" data-section="logout" id="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+          <span class="logout-tooltip">Click to sign out</span>
+        </a>
+      </div> -->
+    </div>
+
+    <div class="main-content" id="main-content">
+      <div class="test-card fade-in">
+        <div class="card-header">
+          <h2>Logical Reasoning Assessment</h2>
+        </div>
+        <div class="card-body">
+          <div class="notification" id="start-notification">
+            <h2>Ready to Begin Your Test?</h2>
+            <p>
+              You will have 30 minutes to complete 20 questions. Once started,
+              the timer cannot be paused.
+            </p>
+            <button class="btn btn-primary" id="start-btn">
+              <i class="fas fa-play"></i> Start Test
+            </button>
+            <button class="btn btn-secondary" id="cancel-btn">
+              <i class="fas fa-times"></i> Not Now
+            </button>
+          </div>
+
+          <!-- Name Input Modal -->
+          <div id="name-modal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; display: flex; justify-content: center; align-items: center;">
+            <div style="background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); text-align: center;">
+              <h2 style="margin-bottom: 1rem; color: var(--primary); font-weight: 600;">Please Enter Your Full Name</h2>
+              <input type="text" id="user-name-input" placeholder="Your full name" style="width: 70%; padding: 0.8rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 1rem;" />
+              <button class="btn btn-primary" id="submit-name-btn" style="width: 70%;">Submit</button>
+            </div>
+          </div>
+
+          <div
+            class="countdown-container"
+            id="countdown-section"
+            style="display: none"
+          >
+            <h2>Test Starting In</h2>
+            <div id="countdown-timer">10</div>
+            <p id="countdown-message">Get ready! The test will begin shortly.</p>
+            <button class="btn btn-danger" id="skip-btn">
+              <i class="fas fa-forward"></i> Skip Countdown
+            </button>
+          </div>
+
+          <div class="loading-spinner" id="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading test questions...</p>
+          </div>
+          <div class="test-container" id="test-section" style="display: none">
+            <div class="progress-container">
+              <div class="progress-bar">
+                <div class="progress" id="test-progress"></div>
+              </div>
+              <div class="progress-text" id="progress-text">Question 1 of 20</div>
+            </div>
+
+            <div class="timer-container">
+              <i class="fas fa-clock timer-icon"></i>
+              <span class="timer-text" id="test-timer">30:00</span>
+            </div>
+
+            <div class="question-container">
+              <div class="question-text" id="question-text"></div>
+
+              <div class="options-container" id="options-container">
+                <!-- Options will be loaded here -->
+              </div>
+            </div>
+
+            <div class="navigation-buttons">
+              <button class="btn btn-secondary" id="prev-btn" disabled>
+                <i class="fas fa-arrow-left"></i> Previous
+              </button>
+              <button class="btn btn-primary" id="next-btn">
+                Next <i class="fas fa-arrow-right"></i>
+              </button>
+              <button class="btn btn-success" id="submit-btn">
+                <i class="fas fa-paper-plane"></i> Submit Test
+              </button>
+            </div>
+          </div>
+
+          <!-- New Results Section -->
+          <!-- Removed results section as results will be shown on separate page -->
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+    $(document).ready(async function() {
+
+        // Sidebar menu functionality
+        $('.sidebar-menu a').click(function(e) {
+            e.preventDefault();
+            const section = $(this).data('section');
+            
+            // Update active state
+            $('.sidebar-menu a').removeClass('active');
+            $(this).addClass('active');
+            
+            // Handle section switching
+            switch(section) {
+                case 'dashboard':
+                    showDashboard();
+                    break;
+                case 'tests':
+                    showMyTests();
+                    break;
+                case 'results':
+                    showResults();
+                    break;
+                case 'settings':
+                    showSettings();
+                    break;
+                case 'logout':
+                    confirmLogout();
+                    break;
+            }
+        });
+
+        // Toggle sidebar
+
+
+        // Section handlers
+        function showDashboard() {
+            $('#test-section, #countdown-section, #loading-spinner').hide();
+            $('#start-notification').fadeIn();
+        }
+
+        function showMyTests() {
+            alert('Loading test history...');
+        }
+
+        function showResults() {
+            alert('Loading results dashboard...');
+        }
+
+        function showSettings() {
+            alert('Opening settings...');
+        }
+
+        function confirmLogout() {
+            if(confirm('Are you sure you want to logout?')) {
+                window.location.href = 'login.html';
+            }
+        }
+
+        $('#sidebar-toggle').click(function() {
+
+            $('#sidebar').toggleClass('active');
+            $('#main-content').toggleClass('active');
+        });
+
+let userNameEntered = false;
+
+// Start test button
+$('#start-btn').click(function() {
+    if (!userNameEntered) {
+        // Show name input modal if name not entered yet
+        $('#name-modal').fadeIn(300);
+    } else {
+        // Hide start notification and start countdown
+        $('#start-notification').fadeOut(300, function() {
+            $('#countdown-section').fadeIn(300);
+            startCountdown();
+        });
+    }
+});
+
+$('#submit-name-btn').click(function() {
+    const userName = $('#user-name-input').val().trim();
+    if (!userName) {
+        alert('Please enter your full name to proceed.');
+        return;
+    }
+    // Store or use the userName as needed (e.g., display or send to server)
+    localStorage.setItem('testUserName', userName);
+    $('#name-modal').fadeOut(300, function() {
+        window.testUserName = userName;
+        userNameEntered = true;
+        // Show start notification again after name entered
+        $('#start-notification').fadeIn(300);
+    });
+});
+
+        // Skip countdown
+        $('#skip-btn').click(function() {
+            $('#countdown-section').fadeOut(300, function() {
+                $('#loading-spinner').fadeIn(300);
+                loadTestQuestions();
+            });
+        });
+
+        // Countdown function
+        function startCountdown() {
+            let count = 10;
+            const countdown = setInterval(function() {
+                count--;
+                $('#countdown-timer').text(count);
+                
+                if (count <= 0) {
+                    clearInterval(countdown);
+                    $('#countdown-section').fadeOut(300, function() {
+                        $('#loading-spinner').fadeIn(300);
+                        loadTestQuestions();
+                    });
+                }
+            }, 1000);
+        }
+
+        // Updated loadTestQuestions function
+let testLoaded = false;
+
+async function loadTestQuestions() {
+    if (testLoaded) {
+        // Test already loaded, just show the test section without reloading questions
+        $('#loading-spinner').stop(true, true).fadeOut(0);
+        $('#test-section').stop(true, true).fadeIn(0);
+        displayQuestion(currentQuestion);
+        return;
+    }
+
+    $('#loading-spinner').stop(true, true).fadeIn(300);
+    
+    try {
+        const success = await initializeTest();
+        
+        setTimeout(() => {
+            if (success) {
+                testLoaded = true;
+                $('#loading-spinner').stop(true, true).fadeOut(0, () => {
+                    $('#test-section').stop(true, true).fadeIn(0);
+                    displayQuestion(currentQuestion);
+                });
+            } else {
+                $('#loading-spinner').stop(true, true).fadeOut(0);
+                showDashboard();
+            }
+        }, 1000);
+    } catch (error) {
+        setTimeout(() => {
+            $('#loading-spinner').stop(true, true).fadeOut(0);
+            showDashboard();
+            alert('Error loading test. Please try again.');
+        }, 2000);
+    }
+}
+
+// Updated question navigation
+function goToQuestion(index) {
+    $('#test-section').fadeOut(300);
+    
+    setTimeout(() => {
+        currentQuestion = index;
+        $('#test-section').fadeIn(300);
+        displayQuestion(currentQuestion);
+    }, 2000);
+}
+
+// Initialize test
+async function initializeTest() {
+    // Static questions array
+    questions = [
+        {
+            id: 1,
+            text: "What is the capital of France?",
+            options: ["London", "Paris", "Berlin", "Madrid"],
+            answer: "Paris"
+        },
+        {
+            id: 2, 
+            text: "Which planet is known as the Red Planet?",
+            options: ["Venus", "Mars", "Jupiter", "Saturn"],
+            answer: "Mars"
+        },
+        {
+            id: 3,
+            text: "What is 2 + 2?",
+            options: ["3", "4", "5", "6"],
+            answer: "4"
+        }
+    ];
+    
+    if (questions.length === 0) {
+        alert('No questions available for this test.');
+        return false;
+    }
+    return true;
+}
+
+        // Test variables
+        let questions = [];
+        let currentQuestion = 0;
+        let userAnswers = {};
+        let testTimer;
+        let timeLeft = 30 * 60; // 30 minutes in seconds
+
+        // Initialize test
+        // Fisher-Yates shuffle function to randomize array elements
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        async function initializeTest() {
+            try {
+                const response = await axios.get('/api/questions');
+                questions = response.data.map(q => ({
+                    id: q._id,
+                    text: q.questionText,
+                    options: q.options,
+                    answer: q.correctAnswer
+                }));
+
+                // Shuffle questions array to display in mixed order
+                shuffleArray(questions);
+                
+                if (questions.length === 0) {
+                    alert('No questions available for this test.');
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                console.error('Failed to load questions:', error);
+                questions = [];
+                alert('Failed to load test questions. Please try again later.');
+                return false;
+            }
+        }
+
+        // Start test timer
+        startTimer();
+
+
+        // Display question
+function displayQuestion(index) {
+    const question = questions[index];
+    if (!question) return;
+
+    // Update progress
+    updateProgress(index + 1, questions.length);
+
+    // Set question text with numbering
+    $('#question-text').text(`${index + 1}. ${question.text}`);
+
+    // Clear and rebuild options
+    const $optionsContainer = $('#options-container');
+    $optionsContainer.empty();
+
+    question.options.forEach((option, i) => {
+        const optionId = `question-${question.id}-option-${i}`;
+        // Use loose equality to handle numeric string vs number
+        const isSelected = userAnswers[question.id] == option ? 'selected' : '';
+        const isChecked = userAnswers[question.id] == option ? 'checked' : '';
+        $optionsContainer.append(`
+            <div class="option-item ${isSelected}" data-question="${question.id}" data-option="${option}">
+                <input type="radio" class="option-input" name="question-${question.id}" 
+                       id="${optionId}" value="${option}" ${isChecked}>
+                <label for="${optionId}">${option}</label>
+            </div>
+        `);
+    });
+
+    // Update navigation buttons
+    $('#prev-btn').prop('disabled', index === 0);
+    if (index === questions.length - 1) {
+        $('#next-btn').hide();
+    } else {
+        $('#next-btn').show();
+    }
+}
+
+        // Update progress bar
+        function updateProgress(current, total) {
+            const percent = (current / total) * 100;
+            $('#test-progress').css('width', percent + '%');
+            $('#progress-text').text(`Question ${current} of ${total}`);
+        }
+
+        // Start test timer
+        function startTimer() {
+            testTimer = setInterval(function() {
+                timeLeft--;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(testTimer);
+                    submitTest();
+                    return;
+                }
+
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                $('#test-timer').text(`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
+            }, 1000);
+        }
+
+$(document).on('click', '.option-item', function() {
+    const questionId = $(this).data('question');
+    const option = $(this).data('option');
+
+    // If this option is already selected, do nothing (prevent deselect)
+    if (userAnswers[questionId] === option) {
+        return;
+    }
+
+    // Store answer
+    userAnswers[questionId] = option;
+
+    // Update UI
+    $(this).addClass('selected').siblings().removeClass('selected');
+
+    // Set the corresponding radio input as checked
+    $(this).find('input.option-input').prop('checked', true);
+});
+
+        // Previous question
+        $('#prev-btn').click(function() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                displayQuestion(currentQuestion);
+            }
+        });
+
+        // Next question
+        $('#next-btn').click(function() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                displayQuestion(currentQuestion);
+            }
+        });
+
+        // Continue to verbal reasoning
+        $('#continue-btn').click(function() {
+            $('#verbal-notification').fadeOut(300, function() {
+                $('#test-section').fadeIn(300);
+                // Increment to next question (6th question)
+                currentQuestion++;
+                displayQuestion(currentQuestion);
+            });
+        });
+
+
+
+        // Notification for incomplete answers
+        function showIncompleteNotification() {
+            // Remove existing notification if any
+            $('#incomplete-notification').remove();
+
+            // Create notification element
+            const notification = $(`
+                <div id="incomplete-notification" class="notification" style="background: #f8d7da; color: #842029; border: 1px solid #f5c2c7; margin-bottom: 1rem;">
+                    <h3 style="margin: 0; font-weight: 600;">Please answer all the questions before submitting the test.</h3>
+                </div>
+            `);
+
+            // Insert notification above the test container
+            $('.card-body').prepend(notification);
+
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                notification.fadeOut(500, () => notification.remove());
+            }, 5000);
+        }
+
+        // Submit test with validation
+        $('#submit-btn').click(function() {
+            // Check if all questions are answered
+            const totalQuestions = questions.length;
+            const answeredCount = Object.keys(userAnswers).length;
+
+            if (answeredCount < totalQuestions) {
+                showIncompleteNotification();
+                return;
+            }
+
+        if (confirm("Are you sure you want to submit your test?")) {
+            submitTest();
+        }
+    });
+
+    // Removed local submit function and button as per user request
+    // Removed submitTestUser function and local submit button
+
+function optionIndexToLetter(index) {
+    return ["A", "B", "C", "D"][index] || "";
+}
+
+    async function submitTest() {
+        clearInterval(testTimer);
+
+        const timeTakenSeconds = 30 * 60 - timeLeft;
+        const minutes = Math.floor(timeTakenSeconds / 60);
+        const seconds = timeTakenSeconds % 60;
+        const timeTakenText = `${minutes}m ${seconds}s`;
+
+        // Prepare submission data
+        const submissionData = {
+            name: window.testUserName || '',
+            answers: userAnswers,
+            timeTaken: timeTakenText,
+            questionsSnapshot: questions // Add questions snapshot here
+        };
+
+        if (!submissionData.name) {
+            alert('Please enter your full name before submitting the test.');
+            return;
+        }
+
+        try {
+            // Send submission data to backend API
+            const response = await axios.post('/api/testsubmissions', submissionData);
+            if (response.status === 201) {
+                // Save test data to localStorage for results page
+                localStorage.setItem('testQuestions', JSON.stringify(questions));
+                localStorage.setItem('testUserAnswers', JSON.stringify(userAnswers));
+                localStorage.setItem('testTimeTaken', timeTakenText);
+                localStorage.setItem('submissionId', response.data._id);
+
+                // Redirect to user results page (test_results-user.html)
+                window.location.href = `test_results-user.html?submissionId=${response.data._id}`;
+            } else {
+                alert('Failed to submit test. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error submitting test:', error);
+            if (error.response && error.response.data && error.response.data.error) {
+                alert('Error submitting test: ' + error.response.data.error);
+            } else {
+                alert('Error submitting test. Please try again.');
+            }
+        }
+    }
+
+// Close summary button click handler
+$('#close-summary-btn').click(function() {
+    // Hide summary and show detailed results table
+    $('#results-summary').hide();
+    $('#detailed-results').show();
+    $('#restart-btn').hide();
+});
+
+// Close summary button click handler
+$('#close-summary-btn').click(function() {
+    // Hide summary and show detailed results table
+    $('#results-summary').hide();
+    $('#detailed-results').show();
+    $('#restart-btn').hide();
+});
+
+function displayResults() {
+    const originalTableBody = $('#original-options-table tbody');
+    const abcdTableBody = $('#abcd-options-table tbody');
+
+    originalTableBody.empty();
+    abcdTableBody.empty();
+
+    let correctCount = 0;
+    const totalQuestions = questions.length;
+
+    questions.forEach((question, idx) => {
+        const userAnswer = userAnswers[question.id] || "No Answer";
+
+        // Find user answer letter
+        const userAnswerIndex = question.options.indexOf(userAnswer);
+        const userAnswerLetter = userAnswerIndex !== -1 ? optionIndexToLetter(userAnswerIndex) : "N/A";
+
+        // Find correct answer letter from letter format (A,B,C,D) sent by admin_dashboard.html
+        // Assuming question.answer is a letter like 'A', 'B', 'C', or 'D'
+        const correctAnswerLetter = question.answer;
+
+        // Determine correctness
+        // Compare user answer letter with correct answer letter
+        const isCorrect = userAnswerLetter === correctAnswerLetter;
+
+        if (isCorrect) {
+            correctCount++;
+        }
+
+        // First table row: original options and user answer text
+        const originalRow = $('<tr></tr>');
+        originalRow.append(`<td>${question.text}</td>`);
+        question.options.forEach((opt) => {
+            originalRow.append(`<td>${opt}</td>`);
+        });
+        originalRow.append(`<td>${userAnswer}</td>`);
+        originalTableBody.append(originalRow);
+
+        // Second table row: options as A-D, user answer and correct answer as letters
+        const abcdRow = $('<tr></tr>');
+        abcdRow.append(`<td>${question.text}</td>`);
+
+        // Append options as A-D
+        question.options.forEach((opt) => {
+            abcdRow.append(`<td>${opt}</td>`);
+        });
+
+        abcdRow.append(`<td class="${isCorrect ? "correct" : "incorrect"}">${userAnswerLetter}</td>`);
+        abcdRow.append(`<td>${correctAnswerLetter}</td>`);
+        abcdRow.append(`<td>${isCorrect ? '<span class="checkmark">&#10004;</span>' : '<span class="crossmark">&#10008;</span>'}</td>`);
+
+        abcdTableBody.append(abcdRow);
+    });
+
+    // Update summary score display
+    $('#summary-score').text(`Score: ${correctCount} / ${totalQuestions}`);
+    // Update detailed score display
+    $('#detailed-score').text(`Score: ${correctCount} / ${totalQuestions}`);
+}
+
+// Restart test button
+$('#restart-btn').click(function() {
+    $('#results-section').fadeOut(300, function() {
+        $('#start-notification').fadeIn(300);
+        // Reset test variables for potential restart
+        currentQuestion = 0;
+        userAnswers = {};
+        timeLeft = 30 * 60;
+        $('#test-timer').text("30:00");
+        $('#test-progress').css('width', '0%');
+        $('#progress-text').text('Question 1 of 20');
+        testLoaded = false;
+    });
+});
+    });
+    </script>
+</body>
+</html>
