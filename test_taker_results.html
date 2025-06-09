@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Test Taker Results</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary-color: #0056b3;
+      --primary-dark: #004085;
+      --success-color: #28a745;
+      --success-dark: #218838;
+      --danger-color: #dc3545;
+      --danger-dark: #c82333;
+      --background-light: #f8f9fa;
+      --text-color: #343a40;
+      --shadow-light: rgba(0, 86, 179, 0.3);
+      --shadow-dark: rgba(0, 64, 133, 0.5);
+      --font-family-base: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: var(--font-family-base);
+      background-color: var(--background-light);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: var(--text-color);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    header {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      padding: 1rem 1rem;
+      text-align: center;
+      box-shadow: 0 8px 20px var(--shadow-light);
+      position: relative;
+      font-weight: 700;
+      /* font-size: 2rem; */
+      /* letter-spacing: 0.1em; */
+      text-transform: uppercase;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+      user-select: none;
+    }
+    .back-to-dashboard {
+      position: absolute;
+      left: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-weight: 600;
+      font-size: 1.2rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      background-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      cursor: pointer;
+      z-index: 10;
+    }
+    .back-to-dashboard:hover {
+      color: #cce5ff;
+      background-color: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+      text-decoration: none;
+    }
+    .back-to-dashboard i {
+      font-size: 1.4rem;
+      transition: transform 0.3s ease;
+    }
+    .back-to-dashboard:hover i {
+      transform: translateX(-4px);
+    }
+    main {
+      flex: 1;
+      padding: 3rem 4rem;
+      max-width: 1400px;
+      margin: 2rem auto 3rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+      transition: box-shadow 0.3s ease;
+    }
+    main:hover {
+      box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+    }
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 12px;
+      margin-bottom: 3rem;
+      font-size: 16px;
+      font-weight: 600;
+      color: #495057;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+      transition: box-shadow 0.3s ease;
+      table-layout: fixed;
+    }
+    thead tr th:nth-child(1),
+    tbody tr td:nth-child(1) {
+      width: 5%;
+    }
+    thead tr th:nth-child(2),
+    tbody tr td:nth-child(2) {
+      width: 15%;
+    }
+    thead tr th:nth-child(3),
+    tbody tr td:nth-child(3) {
+      width: 15%;
+    }
+    thead tr th:nth-child(4),
+    tbody tr td:nth-child(4) {
+      width: 15%;
+    }
+    thead tr th:nth-child(5),
+    tbody tr td:nth-child(5) {
+      width: 15%;
+    }
+    thead tr th:nth-child(6),
+    tbody tr td:nth-child(6) {
+      width: 15%;
+    }
+    thead tr th:nth-child(7),
+    tbody tr td:nth-child(7) {
+      width: 10%;
+    }
+    thead tr th:nth-child(8),
+    tbody tr td:nth-child(8) {
+      width: 10%;
+    }
+    thead tr th:nth-child(9),
+    tbody tr td:nth-child(9) {
+      width: 10%;
+    }
+    table:hover {
+      box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+    }
+    thead {
+      /* background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); */
+      /* color: #ff14dc; */
+      border-radius: 12px;
+      /* box-shadow: 0 6px 18px var(--shadow-light); */
+    }
+    thead tr th {
+      padding: 16px 22px;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      border: none;
+      user-select: none;
+      /* text-decoration: #0056b3; */
+    }
+    tbody tr {
+      background: var(--background-light);
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    }
+    tbody tr:hover {
+      background-color: #e9ecef;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
+    tbody tr td {
+      padding: 16px 22px;
+      text-align: center;
+      border: none;
+      vertical-align: middle;
+      user-select: text;
+      transition: color 0.3s ease;
+    }
+    tbody tr td:first-child {
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    .btn-export {
+      margin-right: 20px;
+      padding: 4px 08px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      box-shadow: 0 5px 14px var(--shadow-light);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease, color 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      border: none;
+      color: white;
+      user-select: none;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .btn-export:active {
+      transform: scale(0.95);
+      box-shadow: 0 3px 10px var(--shadow-light);
+    }
+    #export-excel-btn {
+      background-color: var(--success-color);
+      box-shadow: 0 5px 14px rgba(40, 167, 69, 0.5);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+    }
+    #export-excel-btn:hover {
+      background-color: var(--success-dark);
+      box-shadow: 0 8px 22px rgba(40, 167, 69, 0.7);
+      color: #e6f4ea;
+    }
+    #export-pdf-btn {
+      background-color: var(--danger-color);
+      box-shadow: 0 5px 14px rgba(220, 53, 69, 0.5);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+    }
+    #export-pdf-btn:hover {
+      background-color: var(--danger-dark);
+      box-shadow: 0 8px 22px rgba(220, 53, 69, 0.7);
+      color: #f9d6db;
+    }
+    .search-input {
+      max-width: 240px;
+      margin-bottom: 2rem;
+      padding: 0.4rem 0.8rem 0.4rem 2.4rem;
+      border-radius: 8px;
+      border: 2px solid var(--primary-color);
+      box-shadow: 0 0 12px var(--shadow-light);
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+      background: url('data:image/svg+xml;utf8,<svg fill="%230056b3" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 001.48-5.34C15.07 5.59 12.48 3 9.25 3S3.43 5.59 3.43 8.39c0 2.8 2.59 5.39 5.82 5.39a6.471 6.471 0 005.34-1.48l.27.28v.79l4.25 4.25c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41L15.5 14zm-6.25 0C7.01 14 5 11.99 5 9.5S7.01 5 9.25 5 13.5 7.01 13.5 9.5 11.49 14 9.25 14z"/></svg>') no-repeat 6px center;
+      background-size: 18px 18px;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary-dark);
+      box-shadow: 0 0 16px var(--shadow-dark);
+    }
+    @media (max-width: 768px) {
+      main {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+      }
+      .btn-export {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+      }
+      .search-input {
+        max-width: 100%;
+        padding-right: 2rem;
+        font-size: 0.85rem;
+      }
+      thead tr th, tbody tr td {
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+    }
+  </style>
+  <style>
+    .table-container {
+      max-height: 480px;
+      overflow-y: auto;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+      display: block;
+    }
+    .table-container table {
+      border-collapse: separate;
+      border-spacing: 0 12px;
+      width: 100%;
+      display: block;
+    }
+    thead {
+      display: table-header-group;
+    }
+    tbody {
+      display: block;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    thead tr th {
+      position: sticky;
+      top: 0;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      z-index: 5;
+      box-shadow: 0 2px 6px var(--shadow-light);
+    }
+
+    /* Print layout styles */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #print-user-info, #test-takers-table {
+        visibility: visible;
+      }
+      #print-user-info {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        font-size: 20px;
+        font-weight: 700;
+        text-align: center;
+        margin: 1rem 0;
+        color: var(--primary-dark);
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+      }
+      #print-user-info span {
+        font-weight: 600;
+        font-size: 18px;
+      }
+      #test-takers-table {
+        position: absolute;
+        top: 3.5rem;
+        left: 0;
+        width: 100%;
+        border-collapse: collapse;
+        box-shadow: none;
+        overflow: visible;
+      }
+      #test-takers-table thead tr th:not(:nth-child(2)),
+      #test-takers-table tbody tr td:not(:nth-child(2)) {
+        display: none;
+      }
+      #test-takers-table thead tr th,
+      #test-takers-table tbody tr td {
+        text-align: left;
+        font-weight: 600;
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+      #test-takers-table tbody tr {
+        background: white !important;
+        box-shadow: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="admin_dashboard.html" class="back-to-dashboard" aria-label="Back to Dashboard">
+      <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+    <h5>Test Taker Information</h5>
+  </header>
+  <main>
+    <div>
+      <button id="export-excel-btn" class="btn btn-success btn-export" title="Export to Excel">
+        <i class="fas fa-file-excel"></i> Excel
+      </button>
+      <button id="export-pdf-btn" class="btn btn-danger btn-export" title="Export to PDF">
+        <i class="fas fa-file-pdf"></i> PDF
+      </button>
+    </div>
+    <div class="table-search-container" style="display: flex; justify-content: flex-end; margin-bottom: 0.5rem;">
+      <input type="search" id="search-input" class="search-input" placeholder="Search by name..." aria-label="Search by name" title="Search by name" style="max-width: 240px; margin: 0;" />
+    </div>
+    <!-- Print user name element, hidden on screen, visible on print -->
+-    <div id="print-user-name" style="display:none;"></div>
++    <div id="print-user-info" style="display:none;">
++      <span id="print-user-name"></span>
++      <span id="print-time-taken"></span>
++    </div>
+    <div class="table-container">
+      <table id="test-takers-table" class="table table-striped">
+        <thead>
+          <tr>
+            <th style="color: #cce5ff;">S.No.</th>
+            <th style="color: #cce5ff;">Name</th>
+            <th style="color: #cce5ff;">Education</th>
+            <th style="color: #cce5ff;">Field of Study</th>
+            <th style="color: #cce5ff;">Institution</th>
+            <th style="color: #cce5ff;">Certifications</th>
+            <th style="color: #cce5ff;">Date</th>
+            <th style="color: #cce5ff;">Time</th>
+            <th style="color: #cce5ff;">Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="export-utils.js"></script>
+  <script>
+    async function fetchTestTakers() {
+      try {
+        const response = await axios.get('/api/testtakers');
+        return response.data;
+      } catch (error) {
+        alert('Failed to fetch test taker data: ' + error.message);
+        return [];
+      }
+    }
+
+    function renderTable(testTakers) {
+      const tbody = document.querySelector('#test-takers-table tbody');
+      tbody.innerHTML = '';
+      testTakers.forEach((taker, index) => {
+        const createdAt = new Date(taker.createdAt);
+        const date = createdAt.toLocaleDateString();
+        const time = createdAt.toLocaleTimeString();
+        const certifications = taker.certifications && taker.certifications.trim() !== '' ? taker.certifications : 'NULL';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${taker.name}</td>
+          <td>${taker.education.replace(/_/g, ' ')}</td>
+          <td>${taker.field_of_study}</td>
+          <td>${taker.institution}</td>
+          <td>${certifications}</td>
+          <td>${date}</td>
+          <td>${time}</td>
+          <td><button class="delete-taker-btn btn btn-danger btn-sm" data-id="${taker._id}"><i class="fas fa-trash-alt"></i> Delete</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Update print user info element with the first user's name and time taken if available
+      const printUserNameElem = document.getElementById('print-user-name');
+      const printTimeTakenElem = document.getElementById('print-time-taken');
+      if (testTakers.length > 0 && printUserNameElem && printTimeTakenElem) {
+        printUserNameElem.textContent = `User Name: ${testTakers[0].name}`;
+        // Assuming time taken is the difference between createdAt and some start time, but no start time available
+        // So displaying the submission time as "Time Taken" for now
+        const createdAt = new Date(testTakers[0].createdAt);
+        const time = createdAt.toLocaleTimeString();
+        printTimeTakenElem.textContent = `Time Taken: ${time}`;
+      } else {
+        if (printUserNameElem) printUserNameElem.textContent = '';
+        if (printTimeTakenElem) printTimeTakenElem.textContent = '';
+      }
+    }
+
+    function setupSearch() {
+      const searchInput = document.getElementById('search-input');
+      searchInput.addEventListener('input', () => {
+        const filter = searchInput.value.toLowerCase();
+        const rows = document.querySelectorAll('#test-takers-table tbody tr');
+        rows.forEach(row => {
+          const nameCell = row.cells[1].textContent.toLowerCase();
+          row.style.display = nameCell.includes(filter) ? '' : 'none';
+        });
+      });
+    }
+
+    function setupDelete() {
+      const tbody = document.querySelector('#test-takers-table tbody');
+      tbody.addEventListener('click', async (e) => {
+        if (e.target.closest('.delete-taker-btn')) {
+          const button = e.target.closest('.delete-taker-btn');
+          const id = button.getAttribute('data-id');
+          if (confirm('Are you sure you want to delete this test taker data?')) {
+            try {
+              await axios.delete(`/api/testtakers/${id}`);
+              alert('Test taker data deleted successfully.');
+              loadAndRender();
+            } catch (error) {
+              alert('Failed to delete test taker data: ' + error.message);
+            }
+          }
+        }
+      });
+    }
+
+    function setupExport() {
+      document.getElementById('export-excel-btn').addEventListener('click', () => {
+        exportTableToExcel('test-takers-table', 'test_taker_results');
+      });
+      document.getElementById('export-pdf-btn').addEventListener('click', () => {
+        exportTableToPDF('test-takers-table', 'Test Taker Results');
+      });
+    }
+
+    async function loadAndRender() {
+      const testTakers = await fetchTestTakers();
+      renderTable(testTakers);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setupSearch();
+      setupDelete();
+      setupExport();
+      loadAndRender();
+    });
+  </script>
+</body>
+</html>

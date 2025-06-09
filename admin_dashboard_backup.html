@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptitude Test Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4cc9f0;
+      --dark-color: #1a1a2e;
+      --light-color: #f8f9fa;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-color);
+      margin: 0;
+      padding: 0;
+      font-weight: 300; /* Light bold */
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      color: #ffffff;
+      padding: 1.35rem;
+      text-align: center;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand {
+      font-size: 36px;
+      font-weight: bold;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .sidebar {
+      background: linear-gradient(to bottom, var(--dark-color), #16213e);
+      padding: 1rem;
+      position: fixed;
+      top: 107px;
+      left: 0;
+      width: 250px;
+      height: 100vh;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      transition: all 0.5s ease;
+      z-index: 1000;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .sidebar li a {
+      text-decoration: none;
+      color: pink;
+      transition: color 0.2s ease;
+    }
+
+    .sidebar li a:hover {
+      color: #FFC107;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 2rem;
+      transition: all 0.5s ease;
+      flex: 1;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border: none;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .card-header h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    #questions-table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    #questions-table th, #questions-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    #questions-table th {
+      background-color: #f0f0f0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    #questions-table tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    #add-question-btn {
+      background-color: #3e8e41;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #add-question-btn:hover {
+      background-color: #2e7031;
+    }
+
+    #modal-window {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      width: 500px;
+      max-width: 90%;
+    }
+
+    .modal-header {
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .close-btn {
+      position: absolute;
+      background-color: pink;
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      color: #666;
+    }
+
+    .edit-btn, .delete-btn {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .edit-btn {
+      background-color: #4CAF50; /* Green color */
+      color: #fff;
+    }
+
+    .edit-btn:hover {
+      background-color: #45a049;
+    }
+
+    .delete-btn {
+      background-color: #f44336; /* Red color */
+      color: #fff;
+      margin-left: 10px;
+    }
+
+    .delete-btn:hover {
+      background-color: #e53935;
+    }
+
+    .footer {
+      background-color: #212121;
+      color: #ffffff;
+      text-align: center;
+      padding: 1rem;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .footer a {
+      color: #FFC107;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="#">BHARATH AGROVET INDUSTRIES PVT LTD</a>
+            <button class="toggle-btn" id="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    <div class="sidebar">
+        <div class="sidebar-before">
+            <img src="https://bharathagrovet.com/images/bhart_argo_logo.png" alt="Company Logo">
+        </div>
+        <div class="sidebar-content">
+            <div class="user-profile">
+                <i class="fas fa-user-circle" style="font-size: 50px; color: #ffdb8d;"></i>
+                <br><br>
+                <b><span class="user-name">Admin</span></b>
+            </div>
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-chart-line"></i> Aptitude Test
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" class="take-test" data-test-type="verbal-ability">Take Test</a></li>
+                    </ul>
+                </li>
+                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="card-header">
+            <span style="text-align: left;"><button id="test-management-btn">Manage Test</button></span>
+            <div id="test-management-container" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Test Management</h2>
+                    </div>
+                    <div class="card-body">
+                        <table id="questions-table">
+                            <thead>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Question</th>
+                                    <th>Options</th>
+                                    <th>Correct Answer</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="questions-tbody">
+                                <!-- Questions will be populated here -->
+                            </tbody>
+                        </table>
+                        <button id="add-question-btn">Add Question</button>
+                    </div>
+                </div>
+                <div class="card" id="modified-data-card" style="display: none;">
+                    <div class="card-header"></div>
+                    <div class="card-body" id="modified-data-body">
+                        <!-- Modified data will be displayed here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal window for adding and editing questions -->
+            <div id="modal-window" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Add Question</h2>
+                        <button class="close-btn">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-question-form">
+                            <div class="form-group">
+                                <label for="question">Question:</label>
+                                <input type="text" id="question" name="question" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="options">Options:</label>
+                                <div class="options-container">
+                                    <div class="option-input">
+                                        <span>A)</span>
+                                        <input type="text" id="option-a" name="option-a" required>
+                                    </div>
+                                    <div class="option-input">
+                                        <span>B)</span>
+                                        <input type="text" id="option-b" name="option-b" required>
+                                    </div>
+                                    <div class="option-input">
+                                        <span>C)</span>
+                                        <input type="text" id="option-c" name="option-c" required>
+                                    </div>
+                                    <div class="option-input">
+                                        <span>D)</span>
+                                        <input type="text" id="option-d" name="option-d" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="correct-answer">Correct Answer:</label>
+                                
+                                <select id="correct-answer" name="correct-answer" required>
+                                    <option value="" disabled selected>Choose one</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                </select>
+                            </div>
+                            <button id="add-question-btn" type="submit">Add Question</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // Global variables
+        let questions = [];
+        let currentEditId = null;
+
+        // Load questions from API
+        async function loadQuestions() {
+            try {
+                const response = await axios.get('/api/questions');
+                questions = response.data;
+                renderQuestions();
+            } catch (error) {
+                Swal.fire('Error!', 'Failed to load questions: ' + error.message, 'error');
+            }
+        }
+
+        // DOM Ready
+        document.addEventListener('DOMContentLoaded', function() {
+            loadQuestions();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Manage Test button
+            document.getElementById("test-management-btn").addEventListener("click", function() {
+                document.getElementById("test-management-container").style.display = "block";
+                this.style.display = "none";
+            });
+
+            // Add Question button
+            document.getElementById("add-question-btn").addEventListener("click", function() {
+                document.getElementById("modal-window").style.display = "block";
+                currentEditId = null;
+                resetForm();
+            });
+
+            // Close modal
+            document.querySelector('.close-btn').addEventListener('click', function() {
+                document.getElementById("modal-window").style.display = "none";
+            });
+
+            // Form submission
+            document.getElementById("add-question-form").addEventListener("submit", async function(e) {
+                e.preventDefault();
+                await saveQuestion();
+            });
+        }
+
+        // Save question to API
+        async function saveQuestion() {
+            const questionData = {
+                questionText: document.getElementById("question").value,
+                options: [
+                    document.getElementById("option-a").value,
+                    document.getElementById("option-b").value,
+                    document.getElementById("option-c").value,
+                    document.getElementById("option-d").value
+                ],
+                correctAnswer: document.getElementById("correct-answer").value
+            };
+
+            try {
+                if (currentEditId) {
+                    await axios.put(`/api/questions/${currentEditId}`, questionData);
+                    Swal.fire('Success!', 'Question updated successfully', 'success');
+                } else {
+                    await axios.post('/api/questions', questionData);
+                    Swal.fire('Success!', 'Question added successfully', 'success');
+                }
+                document.getElementById("modal-window").style.display = "none";
+                loadQuestions();
+            } catch (error) {
+                Swal.fire('Error!', 'Failed to save question: ' + error.message, 'error');
+            }
+        }
+
+        // Render questions in table
+        function renderQuestions() {
+            const tableBody = document.getElementById("questions-tbody");
+            tableBody.innerHTML = '';
+
+            questions.forEach((question, index) => {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${question.questionText}</td>
+                    <td>${question.options.map((opt, i) => `${String.fromCharCode(65 + i)}) ${opt}`).join(', ')}</td>
+                    <td>${question.correctAnswer}</td>
+                    <td>
+                        <button class="edit-btn" data-id="${question._id}">Edit</button>
+                        <button class="delete-btn" data-id="${question._id}">Delete</button>
+                    </td>
+                `;
+            });
+
+            // Add event listeners to edit/delete buttons
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', editQuestion);
+            });
+
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', deleteQuestion);
+            });
+        }
+
+        // Edit question
+        function editQuestion(e) {
+            const id = e.target.dataset.id;
+            const question = questions.find(q => q._id === id);
+            if (!question) return;
+
+            currentEditId = id;
+            document.getElementById("modal-window").style.display = "block";
+            document.getElementById("question").value = question.questionText;
+            document.getElementById("option-a").value = question.options[0];
+            document.getElementById("option-b").value = question.options[1];
+            document.getElementById("option-c").value = question.options[2];
+            document.getElementById("option-d").value = question.options[3];
+            document.getElementById("correct-answer").value = question.correctAnswer;
+        }
+
+        // Delete question
+        async function deleteQuestion(e) {
+            const id = e.target.dataset.id;
+            const result = await Swal.fire({
+                title: 'Delete Confirmation',
+                text: 'Are you sure you want to delete this question?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    await axios.delete(`/api/questions/${id}`);
+                    Swal.fire('Success!', 'Question deleted successfully', 'success');
+                    loadQuestions();
+                } catch (error) {
+                    Swal.fire('Error!', 'Failed to delete question: ' + error.message, 'error');
+                }
+            }
+        }
+
+        // Helper functions
+        function resetForm() {
+            document.getElementById("question").value = '';
+            document.getElementById("option-a").value = '';
+            document.getElementById("option-b").value = '';
+            document.getElementById("option-c").value = '';
+            document.getElementById("option-d").value = '';
+            document.getElementById("correct-answer").value = 'A';
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#sidebar-toggle').click(function() {
+                if ($('.sidebar').hasClass('active')) {
+                    $('.sidebar').removeClass('active');
+                    $('.main-content').removeClass('active');
+                    $(this).find('i').removeClass('fa-times').addClass('fa-bars');
+                } else {
+                    $('.sidebar').addClass('active');
+                    $('.main-content').addClass('active');
+                    $(this).find('i').removeClass('fa-bars').addClass('fa-times');
+                }
+            });
+            $('.fa-sign-out-alt').parent().click(function() {
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+</html>
